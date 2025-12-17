@@ -1,0 +1,82 @@
+/* CreateNewProduct.css */
+
+/* Контейнер формы */
+.create-product-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.05);
+  background-color: #fff;
+}
+
+/* Заголовок */
+.create-product-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Группа поля + лейбл */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+/* Лейбл */
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Инпуты и textarea */
+.form-group input,
+.form-group textarea {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.form-group textarea {
+  min-height: 60px;
+}
+
+/* Кнопка */
+.create-product-container button {
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.create-product-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Кнопка "назад" */
+.back-button {
+  margin-bottom: 20px;
+}
+
+.back-button button {
+  background-color: #6c757d;
+}
+
+.back-button button:hover {
+  background-color: #5a6268;
+}
