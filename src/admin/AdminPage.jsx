@@ -71,6 +71,9 @@ const AdminPage = () => {
         />
 
         <div style={{ display: "flex", gap: "10px" }}>
+          <div>
+            <p>Всего товаров: {products.length}</p>
+          </div>
           <Link to='/admin/create-prod'>
             <button>Добавить</button>
           </Link>

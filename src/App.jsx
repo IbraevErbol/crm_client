@@ -3,6 +3,7 @@ import { Link, Route, Routes, useLocation } from 'react-router-dom'
 import AdminPage from "./admin/AdminPage"
 import WorkPage from './Pages/WorkPage';
 import CreateNewProduct from './admin/CreateNewProduct';
+import EditProduct from './admin/EditProduct';
 import './App.css'
 const App = () => {
   const location = useLocation();
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/work" element={<WorkPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/create-prod" element={<CreateNewProduct />}/>
+        <Route path="/admin/edit/:id" element={<EditProduct />} />
       </Routes>
       {location.pathname === '/' && (
         <>

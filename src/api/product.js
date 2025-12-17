@@ -25,3 +25,24 @@ export async function deleteProduct(id) {
   if (!res.ok) throw new Error("Failed to delete product");
   return res.json();
 }
+
+export async function findProductById(id) {
+  const res = await fetch(`${API_URL}/${id}`, {method: "GET"});
+  if (!res.ok) throw new Error("Failed to get products by id");
+  return res.json();
+}
+
+export async function editProductById(id, product) {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(product),
+  })
+  if (!res.ok){
+    const errorData = await res.json();
+    throw new Error(errorData.message || "Failed to update product");
+  } 
+
+  return res.json();
+
+}
