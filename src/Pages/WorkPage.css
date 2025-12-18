@@ -1,0 +1,53 @@
+.cashier-layout {
+  display: grid;
+  grid-template-columns: 35% 65%;
+  height: 100vh;
+}
+.cart-panel {
+  border-right: 1px solid #ccc;
+  padding: 16px;
+}
+
+.products-panel {
+  padding: 16px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.product-card {
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.product-card button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.cart-actions button {
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.cart-total {
+    margin-top: 10px;
+    font-size: 18px;
+}

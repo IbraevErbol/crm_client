@@ -41,9 +41,19 @@ const AdminPage = () => {
     loadProducts();
   }
 
-  const filtered = products.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+  // const filtered = products.filter((p) =>
+  //   p.name.toLowerCase().includes(search.toLowerCase()) 
+  // );
+
+  const filtered = products.filter((p) => {
+        const q = search.toLowerCase();
+
+        return (
+            p.name?.toLowerCase().includes(q) ||
+            p.article?.toLowerCase().includes(q) ||
+            p.barcode?.toLowerCase().includes(q)
+        );
+    })
 
   return (
     <div style={{ padding: "20px" }}>
