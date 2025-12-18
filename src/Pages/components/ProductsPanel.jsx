@@ -49,7 +49,8 @@ export default function ProductsPanel({ products, setProducts, cart, setCart }) 
                         <h4>{p.name}</h4>
                         <p>Цена: {p.price} ₸</p>
                         <p>Остаток: {p.quantity}</p>
-
+                        <p>Артикул: {p.article}</p>
+                        <p>Штрихкод: {p.barcode}</p>
                         <button onClick={() => addToCart(p)}>
                             Добавить
                         </button>
