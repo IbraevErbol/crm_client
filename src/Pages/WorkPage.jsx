@@ -8,6 +8,7 @@ export default function WorkPage() {
     const [products, setProducts] = useState([]); // все товары
     const [cart, setCart] = useState([]); // выбранные товары
 
+    console.log(cart)
     useEffect(() =>{
         try {
             const loadFetch = async() => {
