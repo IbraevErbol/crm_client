@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { salesCart } from "../../api/product";
 
 export default function CartPanel({ cart, setCart }) {
     const [isPayOpen, setIsPayOpen] = useState(false);
@@ -10,11 +11,16 @@ export default function CartPanel({ cart, setCart }) {
 
     const changeQty = (id, delta) => {
         setCart((prev) =>
-            prev.map((p) =>
-                p._id === id
-                    ? { ...p, cartQty: p.cartQty + delta }
-                    : p
-            ).filter((p) => p.cartQty > 0)
+            prev.map((p) => {
+                if(p._id !== id) return p;
+
+                const nextQty = p.cartQty + delta;
+                if(nextQty < 1) return null;
+                if(nextQty > p.quantity) return p;
+
+                return {...p, cartQty: nextQty };
+            }
+            ).filter(Boolean)
         )
     }
 
@@ -24,16 +30,31 @@ export default function CartPanel({ cart, setCart }) {
     );
 
 
-    const handlePay = (type) => {
-        alert(
-            type === "cash"
-                ? "Оплата наличными"
-                : "Оплата картой"
-        );
+    const handlePay = async (type) => {
+        const payload = {
+            items: cart.map((p) => ({
+                productId: p._id,
+                name: p.name,
+                price: p.price,
+                quantity: p.cartQty
+            })),
+            paymentType: type
+        }
+        try {
+            await salesCart(payload);
 
-        setCart([]);        // очистили корзину
-        setIsPayOpen(false); // закрыли модалку
+            alert("Оплата прошла успешно ✅");
+
+            setIsPayOpen(false);
+            setCart([]);
+        } catch (error) {
+            alert("Ошибка соединения с сервером");
+            console.error(error);
+        }
+
+
     };
+
 
     return (
         <div className="cart-panel">
@@ -50,7 +71,12 @@ export default function CartPanel({ cart, setCart }) {
                     <div className="cart-actions">
                         <button onClick={() => changeQty(p._id, -1)}>-</button>
                         <span>{p.cartQty}</span>
-                        <button onClick={() => changeQty(p._id, 1)}>+</button>
+                        <button 
+                            onClick={() => changeQty(p._id, 1)}
+                            disabled={p.cartQty >= p.quantity}
+                        >
+                            +
+                        </button>
                         <button onClick={() => removeFromCart(p._id)}>✕</button>
                     </div>
                 </div>

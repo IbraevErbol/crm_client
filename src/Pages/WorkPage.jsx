@@ -5,10 +5,8 @@ import ProductsPanel from "./components/ProductsPanel";
 import { fetchProducts } from "../api/product";
 
 export default function WorkPage() {
-    const [products, setProducts] = useState([]); // все товары
-    const [cart, setCart] = useState([]); // выбранные товары
-
-    console.log(cart)
+    const [products, setProducts] = useState([]); 
+    const [cart, setCart] = useState([]); 
     useEffect(() =>{
         try {
             const loadFetch = async() => {
@@ -20,7 +18,7 @@ export default function WorkPage() {
         } catch (error) {
             console.log(error)
         }
-    }, [])
+    }, [products])
 
     return (
         <div className="cashier-layout">
