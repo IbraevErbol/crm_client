@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { salesCart } from "../../api/product";
+import { Button, List, Modal, Typography, Divider } from "antd";
+import { MinusOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+
+const { Text, Title } = Typography;
 
 export default function CartPanel({ cart, setCart }) {
     const [isPayOpen, setIsPayOpen] = useState(false);
@@ -12,13 +16,13 @@ export default function CartPanel({ cart, setCart }) {
     const changeQty = (id, delta) => {
         setCart((prev) =>
             prev.map((p) => {
-                if(p._id !== id) return p;
+                if (p._id !== id) return p;
 
                 const nextQty = p.cartQty + delta;
-                if(nextQty < 1) return null;
-                if(nextQty > p.quantity) return p;
+                if (nextQty < 1) return null;
+                if (nextQty > p.quantity) return p;
 
-                return {...p, cartQty: nextQty };
+                return { ...p, cartQty: nextQty };
             }
             ).filter(Boolean)
         )
@@ -43,12 +47,12 @@ export default function CartPanel({ cart, setCart }) {
         try {
             await salesCart(payload);
 
-            alert("Оплата прошла успешно ✅");
+            Modal.success({ title: "Оплата прошла успешно" });
 
             setIsPayOpen(false);
             setCart([]);
         } catch (error) {
-            alert("Ошибка соединения с сервером");
+            Modal.error({ title: "Ошибка соединения с сервером" });
             console.error(error);
         }
 
@@ -58,10 +62,37 @@ export default function CartPanel({ cart, setCart }) {
 
     return (
         <div className="cart-panel">
-            <h2>Чек</h2>
-            {cart.length === 0 && <p>Корзина пуста</p>}
+            <Title level={4}>Чек</Title>
+            <List
+                dataSource={cart}
+                locale={{ emptyText: "Корзина пуста" }}
+                renderItem={(p) => (
+                    <List.Item
+                        actions={[
+                            <Button icon={<MinusOutlined />} onClick={() => changeQty(p._id, -1)} />,
+                            <Text>{p.cartQty}</Text>,
+                            <Button
+                                icon={<PlusOutlined />}
+                                disabled={p.cartQty >= p.quantity}
+                                onClick={() => changeQty(p._id, 1)}
+                            />,
+                            <Button
+                                danger
+                                icon={<DeleteOutlined />}
+                                onClick={() => setCart(c => c.filter(i => i._id !== p._id))}
+                            ></Button>
+                        ]}
+                    >
+                        <List.Item.Meta 
+                            title={p.name}
+                            description={`${p.price} ₸ × ${p.cartQty}`}
+                        />
+                    </List.Item>
+                )}
+            />
 
-            {cart.map((p) => (
+            
+            {/* {cart.map((p) => (
                 <div key={p._id} className="cart-item">
                     <div>
                         <strong>{p.name}</strong>
@@ -71,7 +102,7 @@ export default function CartPanel({ cart, setCart }) {
                     <div className="cart-actions">
                         <button onClick={() => changeQty(p._id, -1)}>-</button>
                         <span>{p.cartQty}</span>
-                        <button 
+                        <button
                             onClick={() => changeQty(p._id, 1)}
                             disabled={p.cartQty >= p.quantity}
                         >
@@ -80,16 +111,23 @@ export default function CartPanel({ cart, setCart }) {
                         <button onClick={() => removeFromCart(p._id)}>✕</button>
                     </div>
                 </div>
-            ))}
+            ))} */}
 
             {cart.length > 0 && (
-                <div className="cart-total">
-                    <hr />
-                    <h3>Итого: {total} ₸</h3>
-                </div>
+                // <div className="cart-total">
+                //     <hr />
+                //     <h3>Итого: {total} ₸</h3>
+                // </div>
+                <>
+                    <Divider />
+                    <Title level={5}>Итого: {total} ₸</Title>
+                    <Button type="primary" block onClick={() => setIsPayOpen(true)}>
+                        Оплатить
+                    </Button>
+                </>
             )}
 
-            {cart.length > 0 && (
+            {/* {cart.length > 0 && (
                 <div className="cart-footer">
                     <button
                         className="pay-button"
@@ -98,9 +136,18 @@ export default function CartPanel({ cart, setCart }) {
                         Оплатить
                     </button>
                 </div>
-            )}
+            )} */}
 
-            {isPayOpen && (
+            <Modal
+                title="Способ оплаты"
+                open={isPayOpen}
+                onCancel={() => setIsPayOpen(false)}
+                footer={null}
+            >
+                <Button block onClick={() => handlePay("cash")}>💵 Наличными</Button>
+                <Button block style={{marginTop: 8}} onClick={() => handlePay("card")}>💳 Картой</Button>
+            </Modal> 
+            {/* {isPayOpen && (
                 <div className="modal-overlay">
                     <div className="modal">
                         <h3>Способ оплаты</h3>
@@ -121,7 +168,7 @@ export default function CartPanel({ cart, setCart }) {
                         </button>
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     )
 }

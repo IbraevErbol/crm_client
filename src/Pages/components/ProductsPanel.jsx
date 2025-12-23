@@ -1,6 +1,8 @@
 import { useState } from "react"
-
+import { Input, Card, Row, Col, Empty, Button, Typography, Tag } from "antd";
 //кнопки добавить прикрепит снизу в будущем
+const { Text } = Typography
+const { Search } = Input;
 
 export default function ProductsPanel({ products, setProducts, cart, setCart }) {
     const [search, setSearch] = useState("");
@@ -18,45 +20,65 @@ export default function ProductsPanel({ products, setProducts, cart, setCart }) 
     const addToCart = (product) => {
         setCart((prev) => {
             const exists = prev.find((p) => p._id === product._id);
-            if(exists){
-                return prev.map((p) => 
-                    p._id === product._id 
-                        ? {...p, cartQty: p.cartQty + 1}
+            if (exists) {
+                return prev.map((p) =>
+                    p._id === product._id
+                        ? { ...p, cartQty: p.cartQty + 1 }
                         : p
                 );
             }
 
-            return [...prev, { ...product, cartQty: 1}];
+            return [...prev, { ...product, cartQty: 1 }];
         })
     }
 
     return (
         <div className="products-panel">
-            <h2>Товары</h2>
-            <input
+            {/* <h2>Товары</h2> */}
+            <Search
                 type="text"
                 placeholder="Поиск по названию, артиклю или штрихкоду..."
+                allowClear
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+                style={{ marginBottom: "10px" }}
             />
 
-            {filtered.length === 0 && <p>Нет товаров</p>}
+            {filtered.length === 0 ? (
+                <Empty description="Товары не найдены" />
 
-            <div className="products-grid">
-                {filtered.map((p) => (
-                    <div key={p._id} className="product-card">
-                        <h4>{p.name}</h4>
-                        <p>Цена: {p.price} ₸</p>
-                        <p>Остаток: {p.quantity}</p>
-                        <p>Артикул: {p.article}</p>
-                        <p>Штрихкод: {p.barcode}</p>
-                        <button onClick={() => addToCart(p)}>
-                            Добавить
-                        </button>
-                    </div>
-                ))}
-            </div>
+            ) : (
+                <Row gutter={[16, 16]}>
+                    {filtered.map((p) => (
+                        <Col xs={24} sm={12} md={8} lg={6} key={p._id}>
+                            <Card
+                                hoverable
+                                title={p.name}
+                                actions={[
+                                    <Button
+                                        type="primary"
+                                        block
+                                        disabled={p.quantity === 0}
+                                        onClick={() => addToCart(p)}
+                                    >
+                                        Дoбавить
+                                    </Button>]}
+                            >
+                                <Text strong>{p.price}</Text>
+
+                                <div style={{ marginTop: 8 }}>
+                                    <Tag color={p.quantity > 0 ? "green" : "red"}>
+                                        Остаток: {p.quantity}
+                                    </Tag>
+                                </div>
+                                <Text type="secondary">Артикул: {p.article}</Text><br />
+                                <Text type="secondary">Штрихкод: {p.barcode}</Text>
+                            </Card>
+                        </Col>
+                    ))}
+
+                </Row>)}
+
         </div>
     )
 }
