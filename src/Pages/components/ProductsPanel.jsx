@@ -51,7 +51,7 @@ export default function ProductsPanel({ products, setProducts, cart, setCart }) 
                 <Row gutter={[16, 16]}>
                     {filtered.map((p) => (
                         <Col xs={24} sm={12} md={8} lg={6} key={p._id}>
-                            <Card
+                            {/* <Card
                                 hoverable
                                 title={p.name}
                                 actions={[
@@ -73,6 +73,32 @@ export default function ProductsPanel({ products, setProducts, cart, setCart }) 
                                 </div>
                                 <Text type="secondary">Артикул: {p.article}</Text><br />
                                 <Text type="secondary">Штрихкод: {p.barcode}</Text>
+                            </Card> */}
+                            <Card hoverable>
+                                <Text strong style={{ fontSize: 16, display: "block" }}>
+                                    {p.name}
+                                </Text>
+
+                                <Text strong>{p.price} ₸</Text>
+
+                                <div style={{ marginTop: 8 }}>
+                                    <Tag color={p.quantity > 0 ? "green" : "red"}>
+                                        Остаток: {p.quantity}
+                                    </Tag>
+                                </div>
+
+                                <Text type="secondary">Артикул: {p.article}</Text><br />
+                                <Text type="secondary">Штрихкод: {p.barcode}</Text>
+
+                                <Button
+                                    type="primary"
+                                    block
+                                    disabled={p.quantity === 0}
+                                    style={{ marginTop: 12 }}
+                                    onClick={() => addToCart(p)}
+                                >
+                                    Добавить
+                                </Button>
                             </Card>
                         </Col>
                     ))}

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteProduct, fetchProducts } from "../api/product";
+import { Table, Tag,  Button, Input, Segmented, Badge, Space, Modal } from "antd";
 
 {/*Доска задач */ }
 //Реализовать удаление, изменение
@@ -20,173 +21,168 @@ const AdminPage = () => {
   const loadProducts = async () => {
     try {
       const data = await fetchProducts();
-      // console.log("API data:", data);
       setProducts(data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const toggleSelect = (id) => {
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]
-    )
-  }
-
-  const deleteSelected = async () => {
-    await Promise.all(selected.map(id => deleteProduct(id)));
-    
-    setSelected([]);
-    setMode("none");
-    loadProducts();
-  }
-
-  // const filtered = products.filter((p) =>
-  //   p.name.toLowerCase().includes(search.toLowerCase()) 
-  // );
-
-  const filtered = products.filter((p) => {
-        const q = search.toLowerCase();
-
-        return (
-            p.name?.toLowerCase().includes(q) ||
-            p.article?.toLowerCase().includes(q) ||
-            p.barcode?.toLowerCase().includes(q)
-        );
+  const deleteSelected = () => {
+    Modal.confirm({
+      title: "Удалить товары?",
+      content: `Будет удалено: ${selected.length}`,
+      okText: "Удалить",
+      okType: 'danger',
+      cancelText: "Отмена",
+      async onOk() {
+        await Promise.all(selected.map(id => deleteProduct(id)));
+        setSelected([]);
+        setMode("none");
+        loadProducts();
+      }
     })
+
+  }
+
+  const rowSelection = mode === 'delete' ? {
+    selectedRowKeys: selected,
+    onChange: (keys) => setSelected(keys),
+  } : undefined;
+
+  useEffect(() => {
+    if(mode !== 'delete') setSelected([]);
+  }, [mode])
+  const columns = [
+    {
+      title: "#", key: "index",
+      render: (_, __, index) => index + 1,
+    },
+    { title: 'Название', dataIndex: 'name', key: 'name', },
+    {
+      title: 'Цена', dataIndex: 'price', key: 'price',
+      render: (p) => `${p.toLocaleString()}₸`
+    },
+    { title: 'Артикул', dataIndex: 'article', key: 'article', },
+    { title: 'Штрихкод', dataIndex: 'barcode', key: 'barcode', },
+    {
+      title: 'Себестоимость', dataIndex: 'costPrice', key: 'costPrice',
+      render: (p) => `${p.toLocaleString()}₸`
+    },
+    {
+      title: 'Количество', dataIndex: 'quantity', key: 'quantity',
+      render: (qty) =>
+        <Tag color={qty > 0 ? 'green' : 'red'}>
+          {qty}
+        </Tag>
+    },
+    { title: 'Категория', dataIndex: 'category', key: 'category', },
+    { title: 'Описание', dataIndex: 'description', key: 'description', },
+    {
+      title: 'Скидка', dataIndex: 'discount', key: 'discount',
+      render: (d) => `${d}%`
+    },
+    { title: 'Продано', dataIndex: 'soldCount', key: 'soldCount', },
+    {
+      title: 'Создано', dataIndex: 'createdAt', key: 'createdAt',
+      render: (value) =>
+        value ? new Date(value).toLocaleString() : "-",
+    },
+    {
+      title: 'Обновлено', dataIndex: 'updatedAt', key: 'updatedAt',
+      render: (value) =>
+        value ? new Date(value).toLocaleString() : "-",
+    },
+    ...(mode === 'edit' ?
+      [
+        {
+          title: "Действие", key: "action",
+          render: (_, record) => (
+            <Button onClick={() => navigate(`/admin/edit/${record._id}`)}>
+              ✏️
+            </Button>
+          )
+        }
+      ] : [])
+  ]
+
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase();
+
+    return products.filter(p =>
+      p.name?.toLowerCase().includes(q) ||
+      p.article?.toLowerCase().includes(q) ||
+      p.barcode?.toLowerCase().includes(q)
+    );
+  }, [products, search]);
 
   return (
     <div style={{ padding: "20px" }}>
-      {/* BACK BUTTON */}
-      <div style={{ marginBottom: "20px" }}>
-        <Link to="/">
-          <button style={{ padding: "10px 20px", fontSize: "16px" }}>Назад</button>
-        </Link>
-      </div>
 
       {/* HEADER */}
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          marginBottom: "20px",
+          alignItems: 'center',
+          marginBottom: 20,
+          gap: 16,
         }}
       >
-        <input
-          type="text"
+        <Input
           placeholder="Поиск товара..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{ width: "50%", padding: "10px", fontSize: "16px" }}
+          style={{maxWidth: 400}}
+          allowClear
         />
 
-        <div style={{ display: "flex", gap: "10px" }}>
-          <div>
-            <p>Всего товаров: {products.length}</p>
-          </div>
+        <Space>
+          <span>Всего: <b>{products.length}</b></span>
+
+          <Segmented 
+            value={mode}
+            onChange={setMode}
+            options={[
+              {label: "Просмотр", value: 'none'},
+              {label: "Изменить", value: 'edit'},
+              {label: "Удалить", value: 'delete'},
+            ]}
+          />
+
           <Link to='/admin/create-prod'>
-            <button>Добавить</button>
+            <Button type="primary">➕ Добавить</Button>
           </Link>
 
-          {mode === "delete" ? (
-            <>
-              <button onClick={deleteSelected} disabled={selected.length === 0}>
-                Удалить выбранные
-              </button>
-              <button onClick={() => { setMode("none"); setSelected([]); }}>
-                Отмена
-              </button>
-            </>
-          ) : mode === "edit" ? (
-            <button onClick={() => setMode("none")}>Отмена</button>
-          ) : (
-            <>
-              <button onClick={() => setMode("delete")}>Удалить</button>
-              <button onClick={() => setMode("edit")}>Изменить</button>
-            </>
+          {mode === 'delete' && (
+            <Badge count={selected.length}>
+              <Button
+                danger
+                disabled={selected.length === 0}
+                onClick={deleteSelected}
+              >
+                Удалить
+              </Button>
+            </Badge>
           )}
-          <button>Экспорт</button>
-          <button>Импорт</button>
+        </Space>
         </div>
-      </div>
-
       {/* LIST */}
       <div>
         <h2>Все товары</h2>
         {filtered.length === 0 && <p>Нет товаров</p>}
 
-        {filtered.length > 0 && (
-          <table style={{ borderCollapse: "collapse", width: "100%" }}>
-            <thead>
-              <tr>
-                {[
-                  "#", "Название", "Цена", "Артикул", "Штрихкод",
-                  "Себестоимость", "Количество", "Категория", "Описание",
-                  "Скидка", "Продано", "Создано", "Обновлено"
-                ].map((h) => (
-                  <th key={h} style={thStyle}>{h}</th>
-                ))}
-                {/* Новый столбец */}
-                {mode !== "none" && <th style={thStyle}>Действие</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((p, index) => (
-                <tr key={p._id}>
-                  <td style={tdStyle}>{index + 1}</td>
-                  <td style={tdStyle}>{p.name}</td>
-                  <td style={tdStyle}>{p.price}₸</td>
-                  <td style={tdStyle}>{p.article}</td>
-                  <td style={tdStyle}>{p.barcode}</td>
-                  <td style={tdStyle}>{p.costPrice}₸</td>
-                  <td style={tdStyle}>{p.quantity}</td>
-                  <td style={tdStyle}>{p.category || "-"}</td>
-                  <td style={tdStyle}>{p.description || "-"}</td>
-                  <td style={tdStyle}>{p.discount || 0}%</td>
-                  <td style={tdStyle}>{p.soldCount || 0}</td>
-                  <td style={tdStyle}>
-                    {p.createdAt ? new Date(p.createdAt).toLocaleString() : "-"}
-                  </td>
-                  <td style={tdStyle}>
-                    {p.updatedAt ? new Date(p.updatedAt).toLocaleString() : "-"}
-                  </td>
 
-                  {mode === 'delete' && (
-                    <td style={tdStyle}>
-                      <input 
-                        type="checkbox" 
-                        checked={selected.includes(p._id)}
-                        onChange={() => toggleSelect(p._id)}
-                      />
-                    </td>
-                  )}
-                  {mode === 'edit' && (
-                    <td style={tdStyle}>
-                      <button onClick={() => navigate(`/admin/edit/${p._id}`)}>
-                        ✏️
-                      </button>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <Table
+          columns={columns}
+          dataSource={filtered}
+          rowKey="_id"
+          pagination={{ pageSize: 10 }}
+          rowSelection={rowSelection}
+        />
       </div>
     </div>
   );
 };
 
-const thStyle = {
-  border: "1px solid #ccc",
-  padding: "8px",
-  backgroundColor: "#f2f2f2",
-  textAlign: "left",
-};
-
-const tdStyle = {
-  border: "1px solid #ccc",
-  padding: "8px",
-};
 
 export default AdminPage;
