@@ -1,11 +1,12 @@
-import { useEffect, useState, useMemo} from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteProduct, fetchProducts } from "../api/product";
-import { Table, Tag,  Button, Input, Segmented, Badge, Space, Modal } from "antd";
+import { Table, Tag, Button, Input, Segmented, Badge, Space, Modal } from "antd";
 
 {/*Доска задач */ }
-//Реализовать удаление, изменение
-//при добавления обязательные поля назвние, цена, себестоимость, артикл, штрихкоде, количество
+//Реализовать удаление, изменение +
+//при добавления обязательные поля назвние, цена, себестоимость, артикл, штрихкоде, количество +
+//Продано не добавляется 
 
 const AdminPage = () => {
   const [products, setProducts] = useState([]);
@@ -50,8 +51,19 @@ const AdminPage = () => {
   } : undefined;
 
   useEffect(() => {
-    if(mode !== 'delete') setSelected([]);
+    if (mode !== 'delete') setSelected([]);
   }, [mode])
+
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase();
+
+    return products.filter(p =>
+      p.name?.toLowerCase().includes(q) ||
+      p.article?.toLowerCase().includes(q) ||
+      p.barcode?.toLowerCase().includes(q)
+    );
+  }, [products, search]);
+
   const columns = [
     {
       title: "#", key: "index",
@@ -105,15 +117,7 @@ const AdminPage = () => {
       ] : [])
   ]
 
-  const filtered = useMemo(() => {
-    const q = search.toLowerCase();
 
-    return products.filter(p =>
-      p.name?.toLowerCase().includes(q) ||
-      p.article?.toLowerCase().includes(q) ||
-      p.barcode?.toLowerCase().includes(q)
-    );
-  }, [products, search]);
 
   return (
     <div style={{ padding: "20px" }}>
@@ -132,20 +136,20 @@ const AdminPage = () => {
           placeholder="Поиск товара..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{maxWidth: 400}}
+          style={{ maxWidth: 400 }}
           allowClear
         />
 
         <Space>
           <span>Всего: <b>{products.length}</b></span>
 
-          <Segmented 
+          <Segmented
             value={mode}
             onChange={setMode}
             options={[
-              {label: "Просмотр", value: 'none'},
-              {label: "Изменить", value: 'edit'},
-              {label: "Удалить", value: 'delete'},
+              { label: "Просмотр", value: 'none' },
+              { label: "Изменить", value: 'edit' },
+              { label: "Удалить", value: 'delete' },
             ]}
           />
 
@@ -165,7 +169,7 @@ const AdminPage = () => {
             </Badge>
           )}
         </Space>
-        </div>
+      </div>
       {/* LIST */}
       <div>
         <h2>Все товары</h2>

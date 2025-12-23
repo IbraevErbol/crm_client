@@ -91,33 +91,7 @@ export default function CartPanel({ cart, setCart }) {
                 )}
             />
 
-            
-            {/* {cart.map((p) => (
-                <div key={p._id} className="cart-item">
-                    <div>
-                        <strong>{p.name}</strong>
-                        <p>{p.price} ₸ × {p.cartQty}</p>
-                    </div>
-
-                    <div className="cart-actions">
-                        <button onClick={() => changeQty(p._id, -1)}>-</button>
-                        <span>{p.cartQty}</span>
-                        <button
-                            onClick={() => changeQty(p._id, 1)}
-                            disabled={p.cartQty >= p.quantity}
-                        >
-                            +
-                        </button>
-                        <button onClick={() => removeFromCart(p._id)}>✕</button>
-                    </div>
-                </div>
-            ))} */}
-
             {cart.length > 0 && (
-                // <div className="cart-total">
-                //     <hr />
-                //     <h3>Итого: {total} ₸</h3>
-                // </div>
                 <>
                     <Divider />
                     <Title level={5}>Итого: {total} ₸</Title>
@@ -126,17 +100,6 @@ export default function CartPanel({ cart, setCart }) {
                     </Button>
                 </>
             )}
-
-            {/* {cart.length > 0 && (
-                <div className="cart-footer">
-                    <button
-                        className="pay-button"
-                        onClick={() => setIsPayOpen(true)}
-                    >
-                        Оплатить
-                    </button>
-                </div>
-            )} */}
 
             <Modal
                 title="Способ оплаты"
@@ -147,28 +110,7 @@ export default function CartPanel({ cart, setCart }) {
                 <Button block onClick={() => handlePay("cash")}>💵 Наличными</Button>
                 <Button block style={{marginTop: 8}} onClick={() => handlePay("card")}>💳 Картой</Button>
             </Modal> 
-            {/* {isPayOpen && (
-                <div className="modal-overlay">
-                    <div className="modal">
-                        <h3>Способ оплаты</h3>
-
-                        <button onClick={() => handlePay("cash")}>
-                            💵 Наличными
-                        </button>
-
-                        <button onClick={() => handlePay("card")}>
-                            💳 Картой
-                        </button>
-
-                        <button
-                            className="close-btn"
-                            onClick={() => setIsPayOpen(false)}
-                        >
-                            Отмена
-                        </button>
-                    </div>
-                </div>
-            )} */}
+    
         </div>
     )
 }

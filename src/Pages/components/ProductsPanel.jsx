@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { Input, Card, Row, Col, Empty, Button, Typography, Tag } from "antd";
-//кнопки добавить прикрепит снизу в будущем
 const { Text } = Typography
 const { Search } = Input;
 
@@ -51,9 +50,18 @@ export default function ProductsPanel({ products, setProducts, cart, setCart }) 
                 <Row gutter={[16, 16]}>
                     {filtered.map((p) => (
                         <Col xs={24} sm={12} md={8} lg={6} key={p._id}>
-                            {/* <Card
+                            <Card
                                 hoverable
-                                title={p.name}
+                                title={
+                                    <div
+                                        style={{
+                                            whiteSpace: "normal",
+                                            lineHeight: "1.3",
+                                            fontWeight: 500,
+                                        }}
+                                    >
+                                        {p.name}
+                                    </div>}
                                 actions={[
                                     <Button
                                         type="primary"
@@ -73,8 +81,8 @@ export default function ProductsPanel({ products, setProducts, cart, setCart }) 
                                 </div>
                                 <Text type="secondary">Артикул: {p.article}</Text><br />
                                 <Text type="secondary">Штрихкод: {p.barcode}</Text>
-                            </Card> */}
-                            <Card hoverable>
+                            </Card>
+                            {/* <Card hoverable>
                                 <Text strong style={{ fontSize: 16, display: "block" }}>
                                     {p.name}
                                 </Text>
@@ -99,7 +107,7 @@ export default function ProductsPanel({ products, setProducts, cart, setCart }) 
                                 >
                                     Добавить
                                 </Button>
-                            </Card>
+                            </Card> */}
                         </Col>
                     ))}
 
