@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { editProductById, findProductById } from "../api/product"
 import { useEffect, useState } from "react"
+import "./CreateNewProduct.css";
 
 export default function EditProduct() {
     const { id } = useParams()
@@ -71,7 +72,7 @@ export default function EditProduct() {
 
     if (loading) return <p>...Загрузка</p>
     return (
-        <div style={{ maxWidth: "600px" }}>
+        <div className="create-product-container" style={{ maxWidth: "600px" }}>
             <h2>Редактирование товара</h2>
             <form onSubmit={handleSubmit}>
                 <Input label="Название" name="name" value={form.name} onChange={handleChange} required />
@@ -104,7 +105,7 @@ export default function EditProduct() {
 }
 
 const Input = ({ label, ...props }) => (
-    <div style={{ marginBottom: "10px" }}>
+    <div className="form-group" style={{ marginBottom: "10px" }}>
         <label>
             {label}
             <input {...props} style={{ width: "100%", padding: "8px" }} />

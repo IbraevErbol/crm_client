@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { createProduct } from "../api/product";
 import "./CreateNewProduct.css";
 
 {/*Доска задач*/ }
-//валидация название, артикул, баркоде
-//оформление нормальное полей
-//соединить с кнопкай в админ стр
+//валидация название, артикул, баркоде +
+//оформление нормальное полей +
+//соединить с кнопкай в админ стр + 
 
 const CreateNewProduct = () => {
+    const navigate = useNavigate();
 
     const [form, setForm] = useState({
         name: "",
@@ -33,8 +34,8 @@ const CreateNewProduct = () => {
 
         const requiredFields = ["name", "price", "costPrice", "article", "barcode", "quantity"];
 
-        for(const field of requiredFields){
-            if(!form[field]){
+        for (const field of requiredFields) {
+            if (!form[field]) {
                 alert(`Поле "${field}" обязательно для заполнения!`)
                 return;
             }
@@ -76,13 +77,6 @@ const CreateNewProduct = () => {
     }
     return (
         <>
-            {/* BACK BUTTON */}
-            <div className="back-button">
-                <Link to="/admin">
-                    <button>Назад</button>
-                </Link>
-            </div>
-
             <div className="create-product-container">
                 <h2>Создание нового товара</h2>
 
@@ -99,17 +93,17 @@ const CreateNewProduct = () => {
 
                     <div className="form-group">
                         <label>Себестоимость:</label>
-                        <input type="number" name="costPrice" value={form.costPrice} onChange={handleChange} required/>
+                        <input type="number" name="costPrice" value={form.costPrice} onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
                         <label>Артикул:</label>
-                        <input type="text" name="article" value={form.article} onChange={handleChange} required/>
+                        <input type="text" name="article" value={form.article} onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
                         <label>Штрихкод:</label>
-                        <input type="text" name="barcode" value={form.barcode} onChange={handleChange} required/>
+                        <input type="text" name="barcode" value={form.barcode} onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
@@ -138,6 +132,9 @@ const CreateNewProduct = () => {
                     </div>
 
                     <button type="submit">Создать товар</button>
+                    <button type="button" onClick={() => navigate("/admin")} style={{ marginLeft: "10px" }}>
+                        Отмена
+                    </button>
                 </form>
             </div>
         </>
