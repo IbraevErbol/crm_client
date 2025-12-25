@@ -1,10 +1,12 @@
-import { Link, Route, Routes, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation} from 'react-router-dom'
 
+import Home from './Home';
 import AdminPage from "./admin/AdminPage"
 import WorkPage from './Pages/WorkPage';
 import CreateNewProduct from './admin/CreateNewProduct';
 import EditProduct from './admin/EditProduct';
 import './App.css'
+
 const App = () => {
   const location = useLocation();
 
@@ -18,31 +20,8 @@ const App = () => {
         <Route path="/admin/create-prod" element={<CreateNewProduct />}/>
         <Route path="/admin/edit/:id" element={<EditProduct />} />
       </Routes>
-      {location.pathname === '/' && (
-        <>
-          <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-            <Link to="/admin">
-              <button style={{ padding: "10px 20px", fontSize: "16px" }}>
-                Перейти в админку
-              </button>
-            </Link>
-            <Link to="/work">
-              <button style={{ padding: "10px 20px", fontSize: "16px" }}>
-                Кассы
-              </button>
-            </Link>
-          </div>
-
-        </>
-      )}
-
     </>
   )
 }
- 
-const Home = () => {
-  return <div>Главная страница</div>
-}
-
 export default App
 

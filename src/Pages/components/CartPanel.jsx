@@ -8,11 +8,6 @@ const { Text, Title } = Typography;
 export default function CartPanel({ cart, setCart }) {
     const [isPayOpen, setIsPayOpen] = useState(false);
 
-
-    const removeFromCart = (id) => {
-        setCart((prev) => prev.filter((p) => p._id !== id));
-    };
-
     const changeQty = (id, delta) => {
         setCart((prev) =>
             prev.map((p) => {
