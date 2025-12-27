@@ -49,16 +49,27 @@
 - артикулом и штрихкодом
 
 ## Используемые технологии
+### Frontend
 - **React** 
 - **React Router**
 - **JavaScript** 
 - **Ant Design** 
+### Backend
+- **Node.js**
+- **Express**
+- **Rest API**
+- **MongoDB**
 
 ## Скриншот проекта
 <p align="center">
-  <img src="public/screen/scene1.png" width="30%" alt="Сцена 1">
-  <img src="public/screen/scene2.png" width="30%" alt="Сцена 2">
-  <img src="public/screen/scene3.png" width="30%" alt="Сцена 3">
+  <img src="public/Снимок экрана 2025-12-27 160653.png" width="30%" alt="Сцена 1">
+  <img src="public/Снимок экрана 2025-12-27 161014.png" width="30%" alt="Сцена 2">
+  <img src="public/Снимок экрана 2025-12-27 161108.png" width="30%" alt="Сцена 3">
+</p>
+<p align="center">
+  <img src="public/Снимок экрана 2025-12-27 161140.png" width="30%" alt="Сцена 1">
+  <img src="public/Снимок экрана 2025-12-27 161209.png" width="30%" alt="Сцена 2">
+  <img src="public/Снимок экрана 2025-12-27 161231.png" width="30%" alt="Сцена 3">
 </p>
 
 ## Установка и запуск
