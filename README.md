@@ -64,12 +64,16 @@
 <p align="center">
   <img src="public/Снимок экрана 2025-12-27 160653.png" width="30%" alt="Сцена 1">
   <img src="public/Снимок экрана 2025-12-27 161014.png" width="30%" alt="Сцена 2">
-  <img src="public/Снимок экрана 2025-12-27 161108.png" width="30%" alt="Сцена 3">
+  <img src="public\Снимок экрана 2025-12-27 163121.png" width="30%" alt="Сцена 3">
 </p>
 <p align="center">
-  <img src="public/Снимок экрана 2025-12-27 161140.png" width="30%" alt="Сцена 1">
-  <img src="public/Снимок экрана 2025-12-27 161209.png" width="30%" alt="Сцена 2">
-  <img src="public/Снимок экрана 2025-12-27 161231.png" width="30%" alt="Сцена 3">
+  <img src="public\Снимок экрана 2025-12-27 163147.png" width="30%" alt="Сцена 1">
+  <img src="public\Снимок экрана 2025-12-27 163150.png" width="30%" alt="Сцена 2">
+  <img src="public\Снимок экрана 2025-12-27 163256.png" width="30%" alt="Сцена 3">
+</p>
+
+<p align="center">
+  <img src="public\Снимок экрана 2025-12-27 163325.png" width="30%" alt="Сцена 1">
 </p>
 
 ## Установка и запуск
