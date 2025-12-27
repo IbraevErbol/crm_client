@@ -1,16 +1,78 @@
-# React + Vite
+# POS / Кассовая система (Full-Stack)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Описание проекта
+Полноценное full-stack web-приложение кассовой системы (POS), включающее клиентскую и серверную часть.
+Приложение предназначено для работы с товарами, продажами и административным управлением.
 
-Currently, two official plugins are available:
+Проект максимально приближен к реальной кассовой системе и разрабатывался как практический опыт создания клиент–серверного приложения.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Архитектура проекта
+Проект разделён на две части:
 
-## React Compiler
+/client   → Frontend (React)
+/server   → Backend (Node.js / API)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Клиент отвечает за интерфейс и взаимодействие пользователя
+Сервер отвечает за бизнес-логику, хранение данных и API
 
-## Expanding the ESLint configuration
+## Функционал
+### 🏠 Главная страница
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Выбор режима работы:
+- **Касса**
+- **Админка**
+- Вход в админку через модальное окно с паролем
+
+### 🛒 Касса (Client)
+- Поиск товаров по:
+- **названию**
+- **артикулу**
+- штрихкоду
+- Отображение полного названия товара
+- Добавление товаров в корзину
+- Увеличение количества товара
+- Проверка наличия товара на складе
+- Блокировка действий при нулевом остатке
+
+### 👨‍💼 Админ-панель
+- Авторизация администратора
+- Просмотр списка товаров
+- Создание новых товаров
+- Редактирование существующих товаров
+- Удаление товаров
+- Работа с:
+- ценой
+- себестоимостью
+- остатком
+- категорией
+- описанием
+- артикулом и штрихкодом
+
+## Используемые технологии
+- **React** 
+- **React Router**
+- **JavaScript** 
+- **Ant Design** 
+
+## Скриншот проекта
+<p align="center">
+  <img src="public/screen/scene1.png" width="30%" alt="Сцена 1">
+  <img src="public/screen/scene2.png" width="30%" alt="Сцена 2">
+  <img src="public/screen/scene3.png" width="30%" alt="Сцена 3">
+</p>
+
+## Установка и запуск
+1. **Backend / Frontend**:
+    ```sh
+    cd server / client
+    npm install 
+    npm run dev
+    ```
+2. Установите зависимости:
+   ```sh
+   npm install antd
+   ```
+
+
+## Автор
+IbraevErbol
